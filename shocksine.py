@@ -156,7 +156,7 @@ def setplot(plotdata):
     plotitem.kwargs = {'linewidth':3}
     plotaxes.xlimits = (-5.,5.)
     
-    plotdata.printfigs = True                # print figures
+    plotdata.printfigs = True                # print figures False to supress png output
     plotdata.plotdir = './_plots'
     plotdata.print_format = 'png'            # file format
     plotdata.print_framenos = 'all'          # list of frames to print
