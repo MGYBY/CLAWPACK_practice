@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # encoding: utf-8
 r"""
+# Output method
 Shu-Osher problem
 ====================
 
