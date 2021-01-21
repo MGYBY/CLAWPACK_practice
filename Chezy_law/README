@@ -1,0 +1,9 @@
+Consider the Chezy's firction law by modifying the following files in $GEOCLAW/src/2d/shallow :
+1. geoclaw_module.f90;
+2. src1d.f90;
+3. src2.f90;
+4. ../python/data.py
+
+The Chezy's law is implemented by variable firction_type:
+  ==1: Manning;
+  ==other integer: Chezy.
