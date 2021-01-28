@@ -108,22 +108,23 @@ def setplot(plotdata=None):
     # Set up for axes in this figure:
     plotaxes = plotfigure.new_plotaxes()
     plotaxes.xlimits = [0.0,domain_x]
-    plotaxes.ylimits = [-domain_y/2.0,domain_y/2.0]
+    plotaxes.ylimits = [0.0,hn*1.5]
     plotaxes.title = 'Centerline slice'
-    def depth_plot(current_data):
-        from pylab import plot, cos,sin,where,legend,nan
-        t = current_data.t
-        q = current_data.q
-        q1 = q[1,:,centerline_index]
-        x = numpy.linspace(0,domain_x,len(q1))
+    #def depth_plot(current_data):
+        #from pylab import plot, cos,sin,where,legend,nan
+        #t = current_data.t
+        #q = current_data.q
+        #q1 = q[1,:,centerline_index]
+        #x = numpy.linspace(0,domain_x,len(q1))
 
-        plot(x, q1, '-', label="true solution", linewidth=2)
+        #plot(x, q1, 'k.', label="true solution", linewidth=2)
         
     plotitem = plotaxes.new_plotitem(plot_type='1d_plot')
-    #plotitem.plotstyle = '-'     ## need to be able to set amr_plotstyle
+    plotitem.plot_var = 0
+    plotitem.plotstyle = 'k--'     ## need to be able to set amr_plotstyle
     #plotitem.kwargs = {'markersize':3}
     #plotitem.amr_show = [1]  # plot on all levels
-    plotaxes.afteraxes = depth_plot
+    #plotaxes.afteraxes = depth_plot
 
 
     #-----------------------------------------
