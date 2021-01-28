@@ -73,6 +73,7 @@ def setplot(plotdata=None):
     plotitem.pcolor_cmin = 0.0
     plotitem.pcolor_cmax = cmax1
     plotitem.add_colorbar = True
+    plotitem.colorbar_label = 'm' #add the unit of the depth
     plotitem.amr_celledges_show = [0,0,0]
     plotitem.patchedges_show = 1
 
