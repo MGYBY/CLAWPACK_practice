@@ -60,7 +60,7 @@ def setplot(plotdata=None):
     # Set up for axes in this figure:
     plotaxes = plotfigure.new_plotaxes('pcolor')
     plotaxes.title = 'Depth'
-    plotaxes.scaled = True
+    plotaxes.scaled = False #enlarge the plot in y-dir
     
     def max_cmap(current_data):
         q = current_data.q
