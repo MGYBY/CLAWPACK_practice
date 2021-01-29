@@ -67,7 +67,7 @@ subroutine src1d(meqn,mbc,mx1d,q1d,maux,aux1d,t,dt)
                 if (friction_type == 1) then
                     gamma = sqrt(hu**2 + hv**2) * (g * coeff**2) / h**(7.d0/3.d0)
                 else
-                    gamma = sqrt(hu**2 + hv**2) * ((1.d0) * coeff / (2.d0)) / h**(1.d0/2.d0)
+                    gamma = sqrt(hu**2 + hv**2) * ((1.d0) * coeff / (2.d0)) / h**(2.d0/1.d0)
                 endif
                 dgamma = 1.d0 + dt * gamma
                 q1d(2, i) = q1d(2, i) / dgamma
