@@ -56,18 +56,9 @@ subroutine rp1(maxmx,meqn,mwaves,maux,mbc,mx,ql,qr,auxl,auxr,wave,s,amdq,apdq)
         s_r = u_r+c_r*qqright
 
         sstar = (s_l*h_r*(u_r-s_r)-s_r*h_l*(u_l-s_l))/(h_r*(u_r-s_r)-h_l*(u_l-s_l))
+        ! Another choice of sstar, not advised
         ! sstar = 1.0/2.0*(u_l+u_r)- ((h_r-h_l)*(c_l+c_r))/(h_l+h_r)
-
-        ! ! Roe averages
-        ! hsqrt_l = dsqrt(qr(1,i-1))
-        ! hsqrt_r = dsqrt(ql(1,i))
-        ! h_hat = 0.5*(h_l + h_r)
-        ! u_hat = (hsqrt_l*u_l + hsqrt_r*u_r) / (hsqrt_l + hsqrt_r)
-        ! c_hat = dsqrt(grav*h_hat)
-
-        ! s1 = min(u_l - c_l, u_hat - c_hat)
-        ! s2 = max(u_r + c_r, u_hat + c_hat)
-
+        
         ! Middle state
         h_ml = h_l*((s_l-u_l)/(s_l-sstar))*1.0
         hu_ml = h_l*((s_l-u_l)/(s_l-sstar))*(sstar)
