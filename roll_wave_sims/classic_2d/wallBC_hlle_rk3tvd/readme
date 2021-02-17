@@ -1,1 +1,3 @@
 Roll wave simulation with wall BC. Time integration is third-order RK instead of Lax-Wendroff.
+
+By now, only the RK3TVD ODE solver in source term works. L-W ALG must be used in flux discretization.
