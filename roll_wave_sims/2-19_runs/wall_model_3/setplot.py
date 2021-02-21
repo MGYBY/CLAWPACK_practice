@@ -1,0 +1,272 @@
+
+""" 
+Set up the plot figures, axes, and items to be done for each frame.
+
+This module is imported by the plotting routines and then the
+function setplot is called to set the plot parameters.
+    
+"""
+
+from __future__ import absolute_import
+import numpy
+from matplotlib import pylab
+
+So = 0.05011
+hn = 0.00798
+un = 1.03774
+grav = 9.81
+cf = grav * So * 2 * hn / (un**2)
+
+domain_x = 42.0
+domain_y = 2.0
+centerline_index = 8
+cmax1 = hn*5.0
+
+x1 = 40.0
+y1 = -0.20
+
+# --------------------------
+
+
+def setplot(plotdata=None):
+    # --------------------------
+    """ 
+    Specify what is to be plotted at each frame.
+    Input:  plotdata, an instance of pyclaw.plotters.data.ClawPlotData.
+    Output: a modified version of plotdata.
+
+    """
+
+    from clawpack.visclaw import colormaps, geoplot
+
+    if plotdata is None:
+        from clawpack.visclaw.data import ClawPlotData
+        plotdata = ClawPlotData()
+
+    def change_fonts(current_data):
+        pylab.xticks(fontsize=21, fontname="Tex Gyre Pagella")
+        pylab.yticks(fontsize=21, fontname="Tex Gyre Pagella")
+        # "Fill the step area with a black rectangle."
+        import matplotlib.pyplot as plt
+        rectangle = plt.Rectangle((x1, y1), 0.4, 0.4, color="k", fill=True)
+        plt.gca().add_patch(rectangle)
+        
+    def change_fonts2(current_data):
+        pylab.xticks(fontsize=17, fontname="Tex Gyre Pagella")
+        pylab.yticks(fontsize=17, fontname="Tex Gyre Pagella")   
+        # "Fill the step area with a black rectangle."
+        import matplotlib.pyplot as plt
+        rectangle = plt.Rectangle((x1,y1),0.4,0.4,color="k",fill=True)
+        plt.gca().add_patch(rectangle)  
+        
+    plotdata.clearfigures()  # clear any old figures,axes,items data
+
+    def set_drytol(current_data):
+        # The drytol parameter is used in masking land and water and
+        # affects what color map is used for cells with small water depth h.
+        # The cell will be plotted as dry if h < drytol.
+        # The best value to use often depends on the application and can
+        # be set here (measured in meters):
+        current_data.user["drytol"] = 1.e-20
+
+    plotdata.beforeframe = set_drytol
+
+    # -----------------------------------------
+    # Figure for pcolor plot
+    # -----------------------------------------
+    plotfigure = plotdata.new_plotfigure(name='pcolor', figno=0)
+    plotfigure.kwargs = {'figsize':[10,10],'facecolor':'white'}
+
+    # Set up for axes in this figure:
+    plotaxes = plotfigure.new_plotaxes('pcolor')
+    plotaxes.title = 'Depth'
+    plotaxes.scaled = False
+
+    # Water
+    plotitem = plotaxes.new_plotitem(plot_type='2d_pcolor')
+    plotitem.plot_var = geoplot.depth
+    plotitem.pcolor_cmap = geoplot.tsunami_colormap
+    plotitem.pcolor_cmin = 0.0
+    plotitem.pcolor_cmax = cmax1
+    plotitem.add_colorbar = True
+    plotitem.colorbar_label = 'm'
+    plotitem.amr_celledges_show = [0, 0, 0]
+    plotitem.patchedges_show = 0
+    plotaxes.xlimits = [0.0, domain_x]
+    plotaxes.ylimits = [-domain_y/2.0, domain_y/2.0]
+
+    # Land
+    plotitem = plotaxes.new_plotitem(plot_type='2d_pcolor')
+    plotitem.plot_var = geoplot.land
+    plotitem.pcolor_cmap = geoplot.land_colors
+    plotitem.pcolor_cmin = 0.0
+    plotitem.pcolor_cmax = cmax1
+    plotitem.add_colorbar = False
+    plotitem.amr_celledges_show = [0, 0, 0]
+    plotitem.patchedges_show = 0
+    plotaxes.xlimits = [0.0, domain_x]
+    plotaxes.ylimits = [-domain_y/2.0, domain_y/2.0]
+
+    # # Add contour lines of bathymetry:
+    # plotitem = plotaxes.new_plotitem(plot_type='2d_contour')
+    # plotitem.plot_var = geoplot.topo
+    # from numpy import arange, linspace
+    # plotitem.contour_levels = linspace(-.1, 0.5, 20)
+    # plotitem.amr_contour_colors = ['k']  # color on each level
+    # plotitem.kwargs = {'linestyles':'solid'}
+    # plotitem.amr_contour_show = [1]
+    # plotitem.celledges_show = 0
+    # plotitem.patchedges_show = 0
+    # plotitem.show = True
+    
+    plotaxes.afteraxes = change_fonts
+
+    # -----------------------------------------
+    # Figure for zoomed area pcolor plot
+    # -----------------------------------------
+    plotfigure = plotdata.new_plotfigure(name='zoomed_pcolor', figno=1)
+
+    # Set up for axes in this figure:
+    plotaxes = plotfigure.new_plotaxes('pcolor')
+    plotaxes.title = 'Depth for Zoomed area'
+    plotaxes.scaled = False
+
+    # Water
+    plotitem = plotaxes.new_plotitem(plot_type='2d_pcolor')
+    plotitem.plot_var = geoplot.depth
+    plotitem.pcolor_cmap = geoplot.tsunami_colormap
+    plotitem.pcolor_cmin = 0.0
+    plotitem.pcolor_cmax = cmax1
+    plotitem.add_colorbar = True
+    plotitem.colorbar_label = 'm'
+    plotitem.amr_celledges_show = [0, 0, 0]
+    plotitem.patchedges_show = 0
+    plotaxes.xlimits = [39.4, 42.0]
+    plotaxes.ylimits = [-domain_y/2.0, domain_y/2.0]
+
+    # Land
+    plotitem = plotaxes.new_plotitem(plot_type='2d_pcolor')
+    plotitem.plot_var = geoplot.land
+    plotitem.pcolor_cmap = geoplot.land_colors
+    plotitem.pcolor_cmin = 0.0
+    plotitem.pcolor_cmax = cmax1
+    plotitem.add_colorbar = False
+    plotitem.amr_celledges_show = [0, 0, 0]
+    plotitem.patchedges_show = 0
+    plotaxes.xlimits = [39.5, 42.0]
+    plotaxes.ylimits = [-domain_y/2.0, domain_y/2.0]
+    
+    plotaxes.afteraxes = change_fonts2
+
+    # -----------------------------------------
+    # Figure for centerline slice
+    # -----------------------------------------
+    plotfigure = plotdata.new_plotfigure(name='Centerline_slice', figno=2)
+
+    # Set up for axes in this figure:
+    plotaxes = plotfigure.new_plotaxes()
+    plotaxes.xlimits = [0.0, domain_x]
+    plotaxes.ylimits = [0.0, hn*2.0]
+    plotaxes.title = 'Centerline slice'
+    # def depth_plot(current_data):
+    #from pylab import plot, cos,sin,where,legend,nan
+    #t = current_data.t
+    #q = current_data.q
+    #q1 = q[1,:,centerline_index]
+    #x = numpy.linspace(0,domain_x,len(q1))
+
+    #plot(x, q1, 'k.', label="true solution", linewidth=2)
+
+    plotitem = plotaxes.new_plotitem(plot_type='1d_plot')
+    plotitem.plot_var = 0
+    plotitem.plotstyle = 'ko'  # need to be able to set amr_plotstyle
+    #plotitem.kwargs = {'markersize':3}
+    # plotitem.amr_show = [1]  # plot on all levels
+    #plotaxes.afteraxes = depth_plot
+
+    # -----------------------------------------
+    # Figure for grids alone
+    # -----------------------------------------
+    plotfigure = plotdata.new_plotfigure(name='grids', figno=3)
+    plotfigure.show = True
+
+    # Set up for axes in this figure:
+    plotaxes = plotfigure.new_plotaxes()
+    plotaxes.xlimits = [0.0, domain_x]
+    plotaxes.ylimits = [-domain_y/2.0, domain_y/2.0]
+    plotaxes.title = 'grids'
+    plotaxes.scaled = True
+
+    # Set up for item on these axes:
+    plotitem = plotaxes.new_plotitem(plot_type='2d_patch')
+    plotitem.amr_patch_bgcolor = ['#ffeeee', '#eeeeff', '#eeffee']
+    plotitem.amr_celledges_show = [1, 1, 0]
+    plotitem.amr_patchedges_show = [1]
+
+    # -----------------------------------------
+    # Figure for cross section at y=0
+    # -----------------------------------------
+    plotfigure = plotdata.new_plotfigure(name='cross-section', figno=4)
+
+    # Set up for axes in this figure:
+    plotaxes = plotfigure.new_plotaxes()
+    plotaxes.xlimits = [0.0, domain_x]
+    plotaxes.ylimits = [0.0, cmax1*1.80]
+    plotaxes.title = 'Cross section at y=0'
+
+    def plot_topo_xsec(current_data):
+        from pylab import plot, cos, sin, where, legend, nan
+        t = current_data.t
+
+        x = numpy.linspace(0.0, domain_x, 201)
+        #y = 0.
+        B = where(x > 40.0, where(x < 40.50, 7.0, 0.0), 0.0)
+        plot(x, B, 'g', label="bathymetry")
+        legend()
+        pylab.xticks(fontsize=21, fontname="Tex Gyre Pagella")
+        pylab.yticks(fontsize=21, fontname="Tex Gyre Pagella")
+
+    plotaxes.afteraxes = plot_topo_xsec
+
+    plotitem = plotaxes.new_plotitem(plot_type='1d_from_2d_data')
+
+    def xsec(current_data):
+        # Return x value and surface depth at this point, along y=0
+        from pylab import where, ravel
+        x = current_data.x
+        y = ravel(current_data.y)
+        dy = current_data.dy
+        q = current_data.q
+
+        ij = where((y <= dy/2.) & (y > -dy/2.))
+        x_slice = ravel(x)[ij]
+        ij1 = where((x_slice > 40.50) | (x_slice < 40.0))
+        x_slice = x_slice[ij1]
+        depth_slice = ravel(q[0, :, :])[ij]
+        depth_slice = depth_slice[ij1]
+        return x_slice, depth_slice
+
+    plotitem.map_2d_to_1d = xsec
+    plotitem.plotstyle = 'k-x'  # need to be able to set amr_plotstyle
+    plotitem.kwargs = {'markersize': 4}
+    plotitem.amr_show = [1]  # plot on all levels
+
+    # -----------------------------------------
+
+    # Parameters used only when creating html and/or latex hardcopy
+    # e.g., via pyclaw.plotters.frametools.printframes:
+
+    plotdata.printfigs = True                # print figures
+    plotdata.print_format = 'png'            # file format
+    plotdata.print_framenos = 'all'          # list of frames to print
+    plotdata.print_gaugenos = []             # list of gauges to print
+    plotdata.print_fignos = 'all'            # list of figures to print
+    plotdata.html = True                     # create html files of plots?
+    plotdata.html_homelink = '../README.html'   # pointer for top of index
+    plotdata.latex = True                    # create latex file of plots?
+    plotdata.latex_figsperline = 2           # layout of plots
+    plotdata.latex_framesperline = 1         # layout of plots
+    plotdata.latex_makepdf = False           # also run pdflatex?
+    plotdata.parallel = True                 # make multiple frame png's at once
+
+    return plotdata
