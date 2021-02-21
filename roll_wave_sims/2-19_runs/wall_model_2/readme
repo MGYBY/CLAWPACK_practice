@@ -1,0 +1,3 @@
+Wall model 2 with fully reflecting BC.
+
+Only HLLE Riemann solver works now.
