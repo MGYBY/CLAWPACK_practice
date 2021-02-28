@@ -1,1 +1,5 @@
 The variable "maxthreads" in $AMRCLAW/src/2d/ is set to 1 initially, which prevents the use of parallelism. The scripts in the directory should be used in place of the corresponding ones in source codes.
+
+Use 
+  make all > logging 
+to see the difference.
