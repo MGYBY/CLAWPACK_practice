@@ -1,2 +1,3 @@
 AMR version of the simulation. 
 Advantages: (1) parallelism; (2) region local refinement; (3) TODO: appropriate AMR criteria.
+Added post-processing features: contour plots and AMR patch plots
