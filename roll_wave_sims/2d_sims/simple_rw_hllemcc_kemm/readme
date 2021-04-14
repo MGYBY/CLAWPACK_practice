@@ -1,0 +1,2 @@
+The simple roll wave simulation using HLLEMCC approximate Riemann solver. 
+limiters: A-R limiter on genuine nonlinear waves, CFL superbee beta=2/3 on linearly degradable waves.
