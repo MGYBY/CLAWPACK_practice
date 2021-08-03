@@ -135,7 +135,7 @@ def setup(use_petsc=False,kernel_language='Fortran',outdir='./_output',solver_ty
 
     if solver_type=='sharpclaw':
         solver.dq_src = dq_swe
-        solver.call_before_step_each_stage = True
+        # solver.call_before_step_each_stage = True
         solver.weno_order = 5
         solver.lim_type   = 2 # weno resonstruction
         solver.cfl_max = 0.36
