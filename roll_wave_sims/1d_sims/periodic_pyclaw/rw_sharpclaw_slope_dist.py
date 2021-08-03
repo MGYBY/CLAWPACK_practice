@@ -30,13 +30,13 @@ import os
 # parameter list
 xlower = 0.0
 xupper = 1.0
-mx = 200
+mx = int(200*xupper)
 
 normal_depth = 0.00798
 normal_velocity = 1.038
 dist_amp = 0.01 # for two kinds of stability problems
 wave_length = xupper
-sim_time = 24.0
+sim_time = 40.0
 output_interval = 1.0 # in seconds
 output_flag = 1.0 #avoid ouput overwrite
 channel_slope = 0.05011
