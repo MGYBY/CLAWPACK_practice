@@ -196,7 +196,7 @@ def setup(use_petsc=False,kernel_language='Fortran',outdir='./_output',solver_ty
         solver.cfl_desired = 0.35
 
     # to remove maximum time step restriction using a sufficiently large number
-    solver.max_steps = 1.0e12
+    solver.max_steps = 100000000000
 
     solver.kernel_language = kernel_language
 
