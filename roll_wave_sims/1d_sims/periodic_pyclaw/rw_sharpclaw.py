@@ -79,7 +79,7 @@ def b4step(solver,state):
     """
     q  = state.q
     height = q[0,:]
-    mom = q[0,:]
+    mom = q[1,:]
     t = state.t
     dt = solver.dt
     # X = state.grid.p_nodes
