@@ -80,16 +80,10 @@ def dq_swe(solver,state,dt):
 
     # X = state.grid.p_nodes
 
-    # # forward Euler
-    # dq[0,:] = 0.0
-    # dq[1,:] = dt*(channel_slope*gravity_val*q[0,:]-cf/2.0*(q[1,:])**2/((q[0,:])**2))
-
-    # RK3 TVD
-    qstar[1,:] = q[1,:]+dt*(slope_dist*gravity_val*q[0,:]-cf/2.0*(q[1,:])**2/((q[0,:])**2))
-    qstar[1,:] = 3.0/4.0*(q[1,:])+1.0/4.0*(qstar[1,:])+1.0/4.0*dt*(slope_dist*gravity_val*q[0,:]-cf/2.0*(qstar[1,:])**2/((q[0,:])**2))
-
+    # # instant source values
     dq[0,:] = 0.0
-    dq[1,:] = (1.0/3.0*q[1,:]+2.0/3.0*qstar[1,:]+2.0/3.0*dt*(slope_dist*gravity_val*q[0,:]-cf/2.0*(qstar[1,:])**2/((q[0,:])**2)))-q[1,:]
+    dq[1,:] = dt*(channel_slope*gravity_val*q[0,:]-cf/2.0*(q[1,:])**2/((q[0,:])**2))
+
 
     return dq
 
